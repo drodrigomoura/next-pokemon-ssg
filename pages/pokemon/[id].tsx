@@ -1,16 +1,26 @@
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
+import { useState } from "react";
 import { pokeApi } from "../../api";
 import { Layout } from "../../components/layouts";
 import { Pokemon } from "../../interfaces";
+import { localFavorites } from "../../utils";
 
 interface Props {
   pokemon: Pokemon;
 }
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+
+  const [isInFavorites, setIsInFavorites] = useState(localFavorites.existInFav(pokemon.id))
+
+  const handleToggleFavorite = () =>{
+    localFavorites.toggleFavorite(pokemon.id)
+    setIsInFavorites(!isInFavorites)
+  }
+
   return (
-    <Layout title={`algun pokemon`}>
+    <Layout title={pokemon.name}>
       <Grid.Container css={{ marginTop: "5px" }} gap={2}>
         <Grid xs={12} sm={4}>
           <Card hoverable css={{ padding: "30px" }}>
@@ -37,18 +47,39 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                 {pokemon.name}
               </Text>
 
-              <Button color="gradient" ghost>Guardar en Favoritos</Button>
+              <Button color="gradient" ghost={!isInFavorites} onClick={handleToggleFavorite}>
+               {isInFavorites ? 'Quitar de Favoritos' : ' Guardar en Favoritos'}
+              </Button>
             </Card.Header>
 
             <Card.Body>
               <Text size={30}>Sprites:</Text>
 
               <Container display="flex" direction="row" gap={0}>
-                <Image src={pokemon.sprites.front_default} alt={pokemon.name} width={100} height={100}/>
-                <Image src={pokemon.sprites.back_default} alt={pokemon.name} width={100} height={100}/>
-                <Image src={pokemon.sprites.front_shiny} alt={pokemon.name} width={100} height={100}/>
-                <Image src={pokemon.sprites.back_shiny} alt={pokemon.name} width={100} height={100}/>
-
+                <Image
+                  src={pokemon.sprites.front_default}
+                  alt={pokemon.name}
+                  width={100}
+                  height={100}
+                />
+                <Image
+                  src={pokemon.sprites.back_default}
+                  alt={pokemon.name}
+                  width={100}
+                  height={100}
+                />
+                <Image
+                  src={pokemon.sprites.front_shiny}
+                  alt={pokemon.name}
+                  width={100}
+                  height={100}
+                />
+                <Image
+                  src={pokemon.sprites.back_shiny}
+                  alt={pokemon.name}
+                  width={100}
+                  height={100}
+                />
               </Container>
             </Card.Body>
           </Card>
