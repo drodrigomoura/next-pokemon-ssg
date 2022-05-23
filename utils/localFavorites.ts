@@ -22,9 +22,14 @@ const existInFav = (id: number): boolean => {
   return favorites.includes(id);
 };
 
+const pokemons = ():number[] => {
+  return JSON.parse(localStorage.getItem('favorites') || '[]')
+}
+
 const fns = {
   existInFav,
   toggleFavorite,
+  pokemons,
 };
 
 export default fns;
