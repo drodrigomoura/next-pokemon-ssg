@@ -132,12 +132,18 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
-
   const { data } = await pokeApi.get<Pokemon>(`/pokemon/${name}`);
+
+  const pokemon = {
+    id: data.id,
+    name: data.name,
+    sprites: data.sprites,
+  };
+
 
   return {
     props: {
-      pokemon: data,
+      pokemon
     },
   };
 };
