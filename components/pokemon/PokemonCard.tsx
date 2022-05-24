@@ -13,7 +13,7 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
   return (
     <Grid key={id} xs={6} sm={3} md={2} xl={1}>
       <Card hoverable clickable>
-        <Link href={`/pokemon/${id}`}>
+        <Link href={`/name/${name}`}>
           <a>
             <Card.Body css={{ p: 1 }}>
               <Card.Image src={img} width="100%" height={140} />

@@ -6,8 +6,7 @@ import confetti from "canvas-confetti";
 import { pokeApi } from "../../api";
 import { Layout } from "../../components/layouts";
 import { Pokemon, PokemonListResponse } from "../../interfaces";
-import { localFavorites } from "../../utils";
-
+import { getPokemonInfo, localFavorites } from "../../utils";
 
 interface Props {
   pokemon: Pokemon;
@@ -132,18 +131,10 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
-  const { data } = await pokeApi.get<Pokemon>(`/pokemon/${name}`);
-
-  const pokemon = {
-    id: data.id,
-    name: data.name,
-    sprites: data.sprites,
-  };
-
-
+  const pokemon = await getPokemonInfo(name);
   return {
     props: {
-      pokemon
+      pokemon,
     },
   };
 };
